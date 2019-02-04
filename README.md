@@ -1,4 +1,6 @@
-## fixedpt
+fixedpt
+=======
+
 Fixed Point Implementation for C. Fixedpts can be created at 16, or 32 bits wide, and radix point can be set at different widths.
 
 ## Method Descriptions
