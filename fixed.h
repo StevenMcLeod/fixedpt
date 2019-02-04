@@ -291,7 +291,7 @@ static void fixed_ufstr(ufixedpt f, char *str) {
 /* Known bugs: At w<=31 ulfixedpt overflows */
 static void fixed_strw(fixedpt fi, unsigned w, char *str) {
     fixedpt ipart = fixed_ipartw(fi, w);
-    ulfixedpt f = fixed_fpartw(fi, w);          // ulfixedpt so widths above 28 print correctly
+    ulfixedpt f = fixed_fpartw(fi, w);          /* ulfixedpt so widths above 28 print correctly */
     if(ipart < 0 && f) {
         *str++ = '-';
         ipart = -(ipart + 1);
