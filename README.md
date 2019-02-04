@@ -79,7 +79,7 @@ fixed\_round(f): Calculates the rounded value of f at the default width. (FPart 
 
 fixed\_\[l\]\[u\]mul(f1, f2): Calculates f1 * f2. Macro inlined version called fixed\_lmul. (If multiplying by integer, can simply use "*" operator)
 
-fixed\_\[l\]\[u\]div(f1, f2): Calculates f1 / f2. Macro inlined version called fixed\_ldiv.
+fixed\_\[l\]\[u\]div(f1, f2): Calculates f1 / f2. Macro inlined version called fixed\_ldiv. (If divisor is integer, can simply use "/" operator)
 
 fixed\_ipow(f, b): Calculates f^b. b can be of any sign. Only operates on fixedpt.
 
