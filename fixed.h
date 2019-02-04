@@ -10,7 +10,10 @@
 #include <stdio.h>
 
 /* Version Specific features */
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+#if defined(__cplusplus)
+#   include <stdint.h>
+extern "C" {
+#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 #   include <stdint.h>
 #elif defined(__STDC__)
 #   define inline
@@ -351,5 +354,8 @@ static const char *fixed_debugstrw(fixedpt f, unsigned w) {
 }
 #endif
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CFIXED_FIXED_H */
