@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 
-// Version Specific features
+/* Version Specific features */
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 #   include <stdint.h>
 #elif defined(__STDC__)
@@ -28,8 +28,6 @@ typedef unsigned long   uint64_t;
 #endif
 
 /* Select a width for the fixedpt type (16 or 32 supported) */
-/* #define FIXED_BASE_WIDTH 16 */
-#define FIXED_BASE_WIDTH 32
 #if !defined(FIXED_BASE_WIDTH)
 #   error "FIXED_BASE_WIDTH not defined!"
 
@@ -49,7 +47,7 @@ typedef uint32_t ulfixedpt;
 #undef FIXED_BASE_WIDTH
 
 /* Default width constants */
-// Byte->Bit, div by 2
+/* Byte->Bit, div by 2 */
 #define FIXED_ONE                       ((fixedpt)1)
 #define FIXED_FWIDTH                    (4*sizeof(fixedpt))
 #define FIXED_IWIDTH                    (8*sizeof(fixedpt)-FIXED_FWIDTH)
@@ -235,7 +233,7 @@ static void fixed_str(fixedpt f, char *str) {
         ipart = -(ipart + 1);
     }
 
-    str += sprintf(str, "%d", ipart);  // Take str to end of string
+    str += sprintf(str, "%d", ipart);  /* Take str to end of string */
     if(!f) return;
 
     *str++ = '.';
@@ -267,7 +265,7 @@ static void fixed_ustr(ufixedpt f, char *str) {
     ufixedpt ipart = fixed_ipart(f);
     f = fixed_fpart(f);
 
-    str += sprintf(str, "%u", ipart);  // Take str to end of string
+    str += sprintf(str, "%u", ipart);  /* Take str to end of string */
     if(!f) return;
 
     *str++ = '.';
@@ -299,7 +297,7 @@ static void fixed_strw(fixedpt fi, unsigned w, char *str) {
         ipart = -(ipart + 1);
     }
 
-    str += sprintf(str, "%d", ipart);  // Take str to end of string
+    str += sprintf(str, "%d", ipart);  /* Take str to end of string */
     if(!f) return;
 
     *str++ = '.';
@@ -320,7 +318,7 @@ static void fixed_ustrw(ufixedpt fi, unsigned w, char *str) {
     ufixedpt ipart = fixed_ipartw(fi, w);
     ulfixedpt f = fixed_fpartw(fi, w);
 
-    str += sprintf(str, "%u", ipart);  // Take str to end of string
+    str += sprintf(str, "%u", ipart);  /* Take str to end of string */
     if(!f) return;
 
     *str++ = '.';
@@ -354,4 +352,4 @@ static const char *fixed_debugstrw(fixedpt f, unsigned w) {
 #endif
 
 
-#endif //CFIXED_FIXED_H
+#endif /* CFIXED_FIXED_H */
