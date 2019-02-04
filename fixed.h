@@ -1,43 +1,66 @@
-//
-// Created by Steven on 06-Aug-18.
-//
+/*
+ *  Created by Steven on 06-Aug-18.
+ */
 
 #ifndef CFIXED_FIXED_H
 #define CFIXED_FIXED_H
 
-/* Todo: Create GNUC compatible macros */
 /* Todo: Design better names for macros */
 
 #include <stdio.h>
 
+// Version Specific features
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-#include <stdint.h>
+#   include <stdint.h>
+#elif defined(__STDC__)
+#   define inline
+
+/* These may need to be changed for different implementations */
+typedef short           int16_t;
+typedef unsigned short  uint16_t;
+typedef int             int32_t;
+typedef unsigned int    uint32_t;
+typedef long            int64_t;
+typedef unsigned long   uint64_t;
+
+#else
+#   error "Unsupported Compiler!"
+#endif
+
+/* Select a width for the fixedpt type (16 or 32 supported) */
+/* #define FIXED_BASE_WIDTH 16 */
+#define FIXED_BASE_WIDTH 32
+#if !defined(FIXED_BASE_WIDTH)
+#   error "FIXED_BASE_WIDTH not defined!"
+
+#elif FIXED_BASE_WIDTH == 32
 typedef int32_t fixedpt;
 typedef uint32_t ufixedpt;
 typedef int64_t lfixedpt;
 typedef uint64_t ulfixedpt;
-#elif defined(__STDC__)
-/*#define inline*/
-typedef int fixedpt;
-typedef unsigned int ufixedpt;
-typedef long int lfixedpt;
-typedef unsigned long int ulfixedpt;
-#else
-#error "Unsupported Compiler"
+
+#elif FIXED_BASE_WIDTH == 16
+typedef int16_t fixedpt;
+typedef uint16_t ufixedpt;
+typedef int32_t lfixedpt;
+typedef uint32_t ulfixedpt;
+
 #endif
+#undef FIXED_BASE_WIDTH
 
 /* Default width constants */
 // Byte->Bit, div by 2
+#define FIXED_ONE                       ((fixedpt)1)
 #define FIXED_FWIDTH                    (4*sizeof(fixedpt))
 #define FIXED_IWIDTH                    (8*sizeof(fixedpt)-FIXED_FWIDTH)
-#define FIXED_FMASK                     ((1 << FIXED_FWIDTH) - 1)
-#define FIXED_1DMASK                    ((1 << (FIXED_FWIDTH-1)))
+#define FIXED_FMASK                     ((FIXED_ONE << FIXED_FWIDTH) - 1)
+#define FIXED_1DMASK                    ((FIXED_ONE << (FIXED_FWIDTH-1)))
 #define FIXED_IMASK                     (~FIXED_FMASK)
 #define FIXED_I1DMASK                   (FIXED_IMASK | FIXED_1DMASK)
 
 /* Variable width constants */
-#define FIXED_FMASKW(w)                 ((1 << (w)) - 1)
-#define FIXED_1DMASKW(w)                ((1 << ((w)-1)))
+#define FIXED_FMASKW(w)                 ((FIXED_ONE << (w)) - 1)
+#define FIXED_1DMASKW(w)                ((FIXED_ONE << ((w)-1)))
 #define FIXED_IMASKW(w)                 (~FIXED_FMASKW(w))
 #define FIXED_I1DMASKW(w)               (FIXED_IMASKW(w) | FIXED_1DMASKW(w))
 
@@ -106,6 +129,7 @@ typedef unsigned long int ulfixedpt;
 #define FIXED_MINUFRACW(w)               (fixed_fpartw(FIXED_MINUVAL, w))
 
 /* Universal operations */
+#define fixed_neg(f)                    (-(f))
 #define fixed_add(f1, f2)               ((f1)+(f2))
 #define fixed_sub(f1, f2)               ((f1)-(f2))
 #define fixed_abs(f)                    ((f) > 0 ? (f) : (-f))
@@ -316,17 +340,18 @@ static void fixed_xstr(ufixedpt f, char *str) {
     sprintf(str, "0x%08x", f);
 }
 
+#ifdef FIXED_DEBUG_STRINGS
+static char FIXED_DEBUG_STRING_BUF[32];
 static const char *fixed_debugstr(fixedpt f) {
-    static char str[256];
-    fixed_str(f, str);
+    fixed_str(f, FIXED_DEBUG_STRING_BUF);
     return str;
 }
 
 static const char *fixed_debugstrw(fixedpt f, unsigned w) {
-    static char str[256];
-    fixed_strw(f, w, str);
+    fixed_strw(f, w, FIXED_DEBUG_STRING_BUF);
     return str;
 }
+#endif
 
 
 #endif //CFIXED_FIXED_H
